@@ -60,6 +60,20 @@ class AccessToken
     }
 
     /**
+     *
+     * @return \DateTime
+     */
+    public function getExpires()
+    {
+        $data = json_decode($this->getToken(), true);
+        $exp = new \DateTime();
+        $exp->setTimestamp($data['created'])
+            ->modify('+'.$data['expires_in'].'seconds');
+
+        return $exp;
+    }
+
+    /**
      * @param string $token
      *
      * @return $this

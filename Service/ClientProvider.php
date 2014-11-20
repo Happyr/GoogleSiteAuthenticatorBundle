@@ -39,6 +39,12 @@ class ClientProvider
     public function setAccessToken($accessToken, $tokenName = null)
     {
         $name = $this->config->getKey($tokenName);
+
+        if ($accessToken===null) {
+            $this->storage->delete($name);
+            return;
+        }
+
         $this->storage->save($name, new AccessToken($name, $accessToken));
     }
 
@@ -49,7 +55,13 @@ class ClientProvider
      */
     public function getAccessToken($tokenName = null)
     {
-        return $this->storage->fetch($this->config->getKey($tokenName));
+        $accessToken = $this->storage->fetch($this->config->getKey($tokenName));
+
+        if (empty($accessToken)) {
+            return null;
+        }
+
+        return $accessToken;
     }
 
     /**
@@ -67,21 +79,37 @@ class ClientProvider
         $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
         $client->setScopes($this->config->getScopes($tokenName));
 
+        // This will allow us to refresh the token
+        $client->setAccessType('offline');
+
         if (!empty($tokenName)) {
             $accessToken = $this->getAccessToken($tokenName);
 
             if ($accessToken) {
                 $client->setAccessToken((string) $accessToken);
 
-                //TODO maybe call refresh token
+                $this->refreshToken($client);
             }
         }
 
         return $client;
     }
 
-    public function refreshToken(\Google_Client $client)
+    /**
+     * Get the refresh token
+     *
+     * @param \Google_Client $client
+     */
+    private function refreshToken(\Google_Client $client)
     {
-        //TODO refresh
+        $accessToken = $client->getAccessToken();
+        $data = json_decode($accessToken, true);
+
+        if (isset($data['refresh_token'])) {
+            $client->refreshToken($data['refresh_token']);
+            return true;
+        }
+
+        return false;
     }
 }

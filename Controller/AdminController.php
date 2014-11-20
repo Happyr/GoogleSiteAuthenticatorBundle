@@ -58,6 +58,24 @@ class AdminController extends Controller
     }
 
     /**
+     * This action starts the authentication
+     *
+     * @param Request $request
+     * @param $name
+     *
+     * @return Response
+     */
+    public function revokeAction($name)
+    {
+        /** @var \Google_Client $client */
+        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
+
+        $clientProvider->setAccessToken(null, $name);
+
+        return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
+    }
+
+    /**
      * This action is used when the user has authenticated with google
      *
      * @param Request $request

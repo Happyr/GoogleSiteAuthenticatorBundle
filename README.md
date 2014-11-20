@@ -21,3 +21,5 @@ www.example.com/admin/authenticate-google/return-url
 new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle()
 new Happyr\GoogleSiteAuthenticatorBundle\HappyrGoogleSiteAuthenticatorBundle(),
 ```
+
+Scopes: https://developers.google.com/drive/web/scopes

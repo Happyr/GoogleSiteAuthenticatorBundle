@@ -14,13 +14,19 @@
         <tr>
             <th>Name</th>
             <th>Status</th>
-            <th>Authenticate</th>
+            <th>Actions</th>
         </tr>
         {% for name,token in tokens %}
             <tr>
                 <td>{{ name }}</td>
-                <td>?</td>
-                <td><a href="{{ path('happyr.google_site_authenticator.authenticate', {name:name}) }}">Authenticate</a></td>
+                <td>{% if token is not null %}Exists{% else %}Missing{% endif %}</td>
+                <td>
+                    {% if token is null %}
+                        <a href="{{ path('happyr.google_site_authenticator.authenticate', {name:name}) }}">Authenticate</a>
+                    {% else %}
+                        <a href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Revoke</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </table>
