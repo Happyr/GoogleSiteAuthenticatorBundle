@@ -1,0 +1,20 @@
+{% extends "HappyrGoogleSiteAuthenticatorBundle::base.html.twig" %}
+
+{% block content %}
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Authenticate</th>
+        </tr>
+        {% for name,token in tokens %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>?</td>
+                <td><a href="{{ path('happyr.google_site_authenticator.authenticate', {name:name}) }}">Authenticate</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -8,9 +8,9 @@ namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 class AccessToken
 {
     /**
-     * @var string id
+     * @var string name
      */
-    protected $id;
+    protected $name;
 
     /**
      * @var string token
@@ -18,45 +18,26 @@ class AccessToken
     protected $token;
 
     /**
-     * @param string $id
+     * @param string $name
      * @param string $token
      */
-    public function __construct($id, $token)
+    public function __construct($name, $token)
     {
-        $this->id = $id;
+        $this->name = $name;
         $this->token = $token;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return $this
-     */
-    public function setId($id)
+    public function __toString()
     {
-        $this->id = $id;
-
-        return $this;
+        $this->getToken();
     }
 
     /**
      * @return string
      */
-    public function getId()
+    public function getName()
     {
-        return $this->id;
-    }
-
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
+        return $this->name;
     }
 
     /**

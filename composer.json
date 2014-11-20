@@ -2,7 +2,7 @@
     "name": "happyr/google-site-authenticator-bundle",
     "type": "symfony-bundle",
     "description": "Authenticate your site with Google API. Can be used instead as Domain-Wide Delegation of Authority",
-    "keywords": ["Birthday"],
+    "keywords": ["Domain-Wide Delegation", "Authentication", "Google", "Site-wide", "Domain-Wide", "API"],
     "homepage": "http://developer.happyr.com",
     "license": "MIT",
     "authors": [

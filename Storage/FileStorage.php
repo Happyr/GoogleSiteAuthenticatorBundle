@@ -18,11 +18,11 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * @param $id
+     * @param $tokenName
      *
      * @return AccessToken
      */
-    public function fetch($id)
+    public function fetch($tokenName)
     {
 
     }

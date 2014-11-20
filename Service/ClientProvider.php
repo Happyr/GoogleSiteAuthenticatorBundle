@@ -2,7 +2,8 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Service;
 
-use Happyr\GoogleSiteAuthenticatorBundle\Model\ClientProviderConfig;
+use Happyr\GoogleSiteAuthenticatorBundle\Model\AccessToken;
+use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
 use Happyr\GoogleSiteAuthenticatorBundle\Storage\StorageInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class ClientProvider
 {
     /**
-     * @var \Happyr\GoogleSiteAuthenticatorBundle\Model\ClientProviderConfig config
+     * @var \Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig config
      */
     private $config;
 
@@ -22,29 +23,48 @@ class ClientProvider
     private $storage;
 
     /**
-     * @param ClientProviderConfig $config
+     * @param TokenConfig $config
      * @param StorageInterface $storage
      */
-    public function __construct(ClientProviderConfig $config, StorageInterface $storage)
+    public function __construct(TokenConfig $config, StorageInterface $storage)
     {
         $this->config = $config;
         $this->storage = $storage;
     }
 
     /**
-     * @param string|null $accessTokenId
+     * @param string $accessToken
+     * @param string|null $tokenName
+     */
+    public function setAccessToken($accessToken, $tokenName = null)
+    {
+        $this->storage->store(new AccessToken($this->config->getKey($tokenName), $accessToken));
+    }
+
+    /**
+     * @param null $tokenName
+     *
+     * @return AccessToken
+     */
+    public function getAccessToken($tokenName = null)
+    {
+        return $this->storage->fetch($this->config->getKey($tokenName));
+    }
+
+    /**
+     * @param string|null $tokenName
      *
      * @return \Google_Client
      */
-    public function getClient($accessTokenId = null)
+    public function getClient($tokenName = null)
     {
         $client = new \Google_Client();
 
-        if (!empty($accessTokenId)) {
-            $accessToken = $this->storage->fetch($accessTokenId);
+        if (!empty($tokenName)) {
+            $accessToken = $this->getAccessToken($tokenName);
 
             if ($accessToken) {
-                $client->setAccessToken($accessToken);
+                $client->setAccessToken((string) $accessToken);
 
                 //TODO maybe call refresh token
 
@@ -52,11 +72,11 @@ class ClientProvider
             }
         }
 
-        $client->setApplicationName(self::APPLICATION_NAME);
-        $client->setClientId($this->apiClientId);
-        $client->setClientSecret($this->apiSecret);
-        $client->setRedirectUri($this->redirectUrl);
-        $client->setScopes($this->scopes);
+        $client->setApplicationName($this->config->getApplicationName());
+        $client->setClientId($this->config->getClientId($tokenName));
+        $client->setClientSecret($this->config->getSecret($tokenName));
+        $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
+        $client->setScopes($this->config->getScopes($tokenName));
 
         return $client;
     }

@@ -20,13 +20,8 @@ class Configuration implements ConfigurationInterface
         $root=$treeBuilder->root('happyr_google_site_authenticator');
 
         $root->children()
-            ->scalarNode('storage')->defaultValue('cache')
-                ->validate()
-                    ->ifNotInArray(array('cache', 'file'))
-                    ->thenInvalid(
-                        'Invalid storage type "%s", must be "file" or "cache".'
-                    )
-                ->end()
+            ->enumNode('storage')->defaultValue('cache')
+                ->values(array('file', 'cache'))
             ->end()
             ->append($this->getTokenNode())
         ->end();
@@ -44,14 +39,15 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('tokens');
         $node
+            ->isRequired()
             ->requiresAtLeastOneElement()
-                ->useAttributeAsKey('name')
+            ->useAttributeAsKey('name')
             ->prototype('array')
             ->children()
                 ->scalarNode('client_id')->isRequired()->end()
                 ->scalarNode('client_secret')->isRequired()->end()
                 ->scalarNode('redirect_url')->isRequired()->end()
-                ->scalarNode('scopes')->defaultNull()->end()
+                ->variableNode('scopes')->end()
             ->end()
         ->end();
 

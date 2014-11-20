@@ -1,4 +1,12 @@
 
-dizda.cloud_backup.google_drive:
+happyr.google_site_authenticator.index:
   path: '/authenticate-google'
-  defaults: { _controller: DizdaCloudBackupBundle:Admin:authenticate }
+  defaults: { _controller: HappyrGoogleSiteAuthenticatorBundle:Admin:index}
+
+happyr.google_site_authenticator.authenticate:
+  path: '/authenticate-google/authenticate/{name}'
+  defaults: { _controller: HappyrGoogleSiteAuthenticatorBundle:Admin:authenticate}
+
+happyr.google_site_authenticator.return_url:
+  path: '/authenticate-google/return-url'
+  defaults: { _controller: HappyrGoogleSiteAuthenticatorBundle:Admin:return}

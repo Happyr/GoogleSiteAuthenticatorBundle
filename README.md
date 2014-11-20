@@ -12,3 +12,7 @@ happyr_google_site_authenticator:
     resource: "@HappyrGoogleSiteAuthenticatorBundle/Resources/config/routing.yml"
     prefix:   /admin
 ```
+
+Make sure you have a redirect url like:
+
+www.example.com/admin/authenticate-google/return-url

@@ -1,14 +1,11 @@
-parameters:
-#    happyr_birthday.example.class: Happyr\GoogleSiteAuthenticatorBundle\Example
 
 services:
-  happyr.google_site_authenticator.client_provider_config:
-    class: Happyr\GoogleSiteAuthenticatorBundle\Model\ClientProviderConfig
-    public: false
+
+  happyr.google_site_authenticator.storage.file:
+    class: Happyr\GoogleSiteAuthenticatorBundle\Storage\FileStorage
     arguments: []
 
-  happyr.google_site_authenticator.client_provider:
-    class: Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider
-    arguments: [@happyr.google_site_authenticator.client_provider_config, ~]
+  happyr.google_site_authenticator.storage.cache:
+    class: Happyr\GoogleSiteAuthenticatorBundle\Storage\FileStorage
+    arguments: []
 
-    
