@@ -1,0 +1,9 @@
+parameters:
+#    happyr_birthday.example.class: Happyr\GoogleSiteAuthenticatorBundle\Example
+
+services:
+
+  happyr.google_site_authenticator.storage.file:
+    class: Happyr\GoogleSiteAuthenticatorBundle\Storage\FileStorage
+    arguments: []
+

@@ -1,0 +1,25 @@
+{
+    "name": "happyr/google-site-authenticator-bundle",
+    "type": "symfony-bundle",
+    "description": "Authenticate your site with Google API. Can be used instead as Domain-Wide Delegation of Authority",
+    "keywords": ["Birthday"],
+    "homepage": "http://developer.happyr.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias@happyr.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "google/apiclient": "~1.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Happyr\\GoogleSiteAuthenticatorBundle\\": ""
+        }
+    },
+    "target-dir": "Happyr/GoogleSiteAuthenticatorBundle"
+}
+
