@@ -9,3 +9,5 @@ services:
     class: Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider
     arguments: [@happyr.google_site_authenticator.token_config, ~]
 
+  happyr.google.client_provider:
+    alias: happyr.google_site_authenticator.client_provider
