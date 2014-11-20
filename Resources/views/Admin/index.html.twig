@@ -2,6 +2,14 @@
 
 {% block content %}
 
+    <div id="flash">
+        {% for flashMessage in app.session.flashbag.get('msg') %}
+            <div class="flash">
+                {{ flashMessage|trans }}
+            </div>
+        {% endfor %}
+    </div>
+
     <table>
         <tr>
             <th>Name</th>

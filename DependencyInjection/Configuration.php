@@ -20,9 +20,7 @@ class Configuration implements ConfigurationInterface
         $root=$treeBuilder->root('happyr_google_site_authenticator');
 
         $root->children()
-            ->enumNode('storage')->defaultValue('cache')
-                ->values(array('file', 'cache'))
-            ->end()
+            ->scalarNode('cache_service')->cannotBeEmpty()->defaultValue('doctrine_cache.providers.apc')->end()
             ->append($this->getTokenNode())
         ->end();
 

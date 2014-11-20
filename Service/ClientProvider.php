@@ -18,15 +18,15 @@ class ClientProvider
     private $config;
 
     /**
-     * @var StorageInterface storage
+     * @var storage
      */
     private $storage;
 
     /**
      * @param TokenConfig $config
-     * @param StorageInterface $storage
+     * @param $storage
      */
-    public function __construct(TokenConfig $config, StorageInterface $storage)
+    public function __construct(TokenConfig $config, $storage)
     {
         $this->config = $config;
         $this->storage = $storage;

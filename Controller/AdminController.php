@@ -75,6 +75,8 @@ class AdminController extends Controller
         if ($request->query->has('code')) {
             try {
                 $client->authenticate($request->query->get('code'));
+                $clientProvider->setAccessToken($client->getAccessToken(), $name);
+
                 $message = 'Authenticated!';
             } catch (\Google_Auth_Exception $e) {
                 $message = $e->getMessage();
@@ -83,6 +85,7 @@ class AdminController extends Controller
             $message = 'Authentication aborted';
         }
 
+        //set flash
         $this->get('session')->getFlashbag()->add('msg', $message);
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));

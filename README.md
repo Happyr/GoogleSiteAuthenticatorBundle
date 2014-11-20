@@ -16,3 +16,8 @@ happyr_google_site_authenticator:
 Make sure you have a redirect url like:
 
 www.example.com/admin/authenticate-google/return-url
+
+```php
+new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle()
+new Happyr\GoogleSiteAuthenticatorBundle\HappyrGoogleSiteAuthenticatorBundle(),
+```

@@ -18,6 +18,16 @@ class AccessToken
     protected $token;
 
     /**
+     * @var \DateTime createdAt
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime updatedAt
+     */
+    protected $updatedAt;
+
+    /**
      * @param string $name
      * @param string $token
      */
@@ -25,6 +35,7 @@ class AccessToken
     {
         $this->name = $name;
         $this->token = $token;
+        $this->initTimestamps();
     }
 
     public function __toString()
@@ -46,5 +57,29 @@ class AccessToken
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+        $this->updateTimestamp();
+
+        return $this;
+    }
+
+    protected function updateTimestamp()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    protected function initTimestamps()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 }

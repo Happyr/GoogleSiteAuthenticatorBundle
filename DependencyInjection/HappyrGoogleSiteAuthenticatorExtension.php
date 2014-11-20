@@ -27,7 +27,7 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
         $loader->load('storage.yml');
 
         // Configure the correct storage
-        $storage=$container->getDefinition('happyr.google_site_authenticator.storage.'.$config['storage']);
+        $storage=$container->getDefinition($config['cache_service']);
         $clientProvider=$container->getDefinition('happyr.google_site_authenticator.client_provider');
         $clientProvider->replaceArgument(1, $storage);
 

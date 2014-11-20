@@ -3,7 +3,7 @@ services:
 
   happyr.google_site_authenticator.storage.file:
     class: Happyr\GoogleSiteAuthenticatorBundle\Storage\FileStorage
-    arguments: []
+    arguments: [~]
 
   happyr.google_site_authenticator.storage.cache:
     class: Happyr\GoogleSiteAuthenticatorBundle\Storage\FileStorage

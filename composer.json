@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": ">=5.4",
+        "doctrine/doctrine-cache-bundle": "~1.0",
         "google/apiclient": "~1.1"
     },
     "autoload": {
