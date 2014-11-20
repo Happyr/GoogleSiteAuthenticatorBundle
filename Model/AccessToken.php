@@ -40,7 +40,7 @@ class AccessToken
 
     public function __toString()
     {
-        $this->getToken();
+        return $this->getToken();
     }
 
     /**

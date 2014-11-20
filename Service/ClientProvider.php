@@ -2,9 +2,9 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Service;
 
+use Doctrine\Common\Cache\CacheProvider;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\AccessToken;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
-use Happyr\GoogleSiteAuthenticatorBundle\Storage\StorageInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -18,7 +18,7 @@ class ClientProvider
     private $config;
 
     /**
-     * @var storage
+     * @var CacheProvider storage
      */
     private $storage;
 
@@ -26,7 +26,7 @@ class ClientProvider
      * @param TokenConfig $config
      * @param $storage
      */
-    public function __construct(TokenConfig $config, $storage)
+    public function __construct(TokenConfig $config, CacheProvider $storage)
     {
         $this->config = $config;
         $this->storage = $storage;
@@ -38,7 +38,8 @@ class ClientProvider
      */
     public function setAccessToken($accessToken, $tokenName = null)
     {
-        $this->storage->store(new AccessToken($this->config->getKey($tokenName), $accessToken));
+        $name = $this->config->getKey($tokenName);
+        $this->storage->save($name, new AccessToken($name, $accessToken));
     }
 
     /**
@@ -60,6 +61,12 @@ class ClientProvider
     {
         $client = new \Google_Client();
 
+        $client->setApplicationName($this->config->getApplicationName());
+        $client->setClientId($this->config->getClientId($tokenName));
+        $client->setClientSecret($this->config->getSecret($tokenName));
+        $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
+        $client->setScopes($this->config->getScopes($tokenName));
+
         if (!empty($tokenName)) {
             $accessToken = $this->getAccessToken($tokenName);
 
@@ -67,16 +74,8 @@ class ClientProvider
                 $client->setAccessToken((string) $accessToken);
 
                 //TODO maybe call refresh token
-
-                return $client;
             }
         }
-
-        $client->setApplicationName($this->config->getApplicationName());
-        $client->setClientId($this->config->getClientId($tokenName));
-        $client->setClientSecret($this->config->getSecret($tokenName));
-        $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
-        $client->setScopes($this->config->getScopes($tokenName));
 
         return $client;
     }
