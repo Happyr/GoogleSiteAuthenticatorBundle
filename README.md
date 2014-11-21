@@ -10,7 +10,14 @@ This bundle is using a normal OAuth for a web application, but it authenticates 
 
 ## Install
 
-First of all you need to activate the bundle in AppKernel. You do also need to activate DoctrineCacheBundle
+Use composer to get the bundle:
+
+```bash
+$ php composer.phar require happyr/google-site-authenticator-bundle dev-master
+$ php composer.phar require google/apiclient @dev
+```
+
+Activate this bundle and DoctrineCacheBundle in AppKernel.
 
 ```php
 new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle()
