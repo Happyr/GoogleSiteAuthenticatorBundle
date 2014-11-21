@@ -51,6 +51,10 @@ class TokenConfig
             return $this->defaultKey;
         }
 
+        if (!isset($this->tokens[$key])) {
+            throw new \LogicException(sprintf('Token with name %s could not be found', $key));
+        }
+
         return $key;
     }
 
