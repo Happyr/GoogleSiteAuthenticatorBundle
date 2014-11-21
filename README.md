@@ -8,6 +8,8 @@ that solution requires you be a paying customer on Google Apps. I wanted a free 
 This bundle is using a normal OAuth for a web application, but it authenticates your google account (or accounts) but
 **not** your users'. It saves the access token in a cache until you manually revoke it.
 
+***Read all of this README file to understand how to get started and authenticated***
+
 ## Install
 
 Use composer to get the bundle:
