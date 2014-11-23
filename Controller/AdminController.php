@@ -30,7 +30,7 @@ class AdminController extends Controller
 
         $tokens = array();
         foreach ($tokenNames as $tokenName) {
-            $tokens[$tokenName] = $clientProvider->getAccessToken($tokenName);
+            $tokens[$tokenName] = $clientProvider->isTokenValid($tokenName);
         }
 
         return array(

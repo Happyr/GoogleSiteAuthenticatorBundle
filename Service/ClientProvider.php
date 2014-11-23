@@ -108,4 +108,32 @@ class ClientProvider
 
         return false;
     }
+
+    /**
+     * Check if a token is valid.
+     * This is an expensive operation that make a API call
+     *
+     * @param string|null $tokenName
+     *
+     * @return bool
+     */
+    public function isTokenValid($tokenName = null)
+    {
+        // We must fetch the client here. A client will automatically refresh the stored access token.
+        $client = $this->getClient($tokenName);
+        if (null === $accessToken = $client->getAccessToken()) {
+            return false;
+        }
+
+        $token = json_decode($accessToken)->access_token;
+        $url = sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
+        if (false === @file_get_contents($url)) {
+            return false;
+        }
+
+        // Retrieve HTTP status code
+        list($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
+
+        return $statusCode==200;
+    }
 }
