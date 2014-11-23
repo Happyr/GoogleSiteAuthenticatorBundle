@@ -6,7 +6,7 @@ use Happyr\GoogleSiteAuthenticatorBundle\Storage\StorageInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * @author  Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class TokenConfig
 {

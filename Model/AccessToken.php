@@ -3,7 +3,7 @@
 namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 
 /**
- * @author Tobias Nyholm
+ * This is the access token model that will be saved in the cache storage.
  */
 class AccessToken
 {

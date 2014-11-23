@@ -4,21 +4,16 @@ namespace Happyr\GoogleSiteAuthenticatorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-/**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class HappyrGoogleSiteAuthenticatorExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * @param array $configs
+     * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -38,7 +33,7 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
         $definition = $container->getDefinition('happyr.google_site_authenticator.token_config');
         $definition->replaceArgument(0, $config['tokens']);
 
-        //make sure we shortcut the service name
+        // make sure we shortcut the service name
         $decorator=new DefinitionDecorator('happyr.google_site_authenticator.client');
         foreach ($config['tokens'] as $name=>$tokenConfig) {
             $service=$container->setDefinition('google.client.'.$name, $decorator);

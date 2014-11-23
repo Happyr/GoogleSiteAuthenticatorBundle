@@ -33,6 +33,64 @@ class ClientProvider
     }
 
     /**
+     * @param string|null $tokenName
+     *
+     * @return \Google_Client
+     */
+    public function getClient($tokenName = null)
+    {
+        $client = new \Google_Client();
+
+        // Set values from configuration
+        $client->setApplicationName($this->config->getApplicationName());
+        $client->setClientId($this->config->getClientId($tokenName));
+        $client->setClientSecret($this->config->getSecret($tokenName));
+        $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
+        $client->setScopes($this->config->getScopes($tokenName));
+
+        if (null === $accessToken = $this->getAccessToken($tokenName)) {
+            // set access token to client if we got one
+            $client->setAccessToken((string) $accessToken);
+
+            // make sure to refresh the stored access token
+            $this->refreshToken($client);
+        }
+
+        return $client;
+    }
+
+    /**
+     * Check if a token is valid.
+     * This is an expensive operation that makes multiple API calls
+     *
+     * @param string|null $tokenName
+     *
+     * @return bool
+     */
+    public function isTokenValid($tokenName = null)
+    {
+        // We must fetch the client here. A client will automatically refresh the stored access token.
+        $client = $this->getClient($tokenName);
+        if (null === $accessToken = $client->getAccessToken()) {
+            return false;
+        }
+
+        // Get the token string from access token
+        $token = json_decode($accessToken)->access_token;
+        $url = sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
+        if (false === @file_get_contents($url)) {
+            return false;
+        }
+
+        // Retrieve HTTP status code
+        list($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
+
+        return $statusCode==200;
+    }
+
+    /**
+     * Store the access token in the storage
+     *
      * @param string $accessToken
      * @param string|null $tokenName
      */
@@ -49,11 +107,13 @@ class ClientProvider
     }
 
     /**
+     * Get access token from storage
+     *
      * @param null $tokenName
      *
      * @return AccessToken
      */
-    public function getAccessToken($tokenName = null)
+    protected function getAccessToken($tokenName = null)
     {
         $accessToken = $this->storage->fetch($this->config->getKey($tokenName));
 
@@ -65,32 +125,7 @@ class ClientProvider
     }
 
     /**
-     * @param string|null $tokenName
-     *
-     * @return \Google_Client
-     */
-    public function getClient($tokenName = null)
-    {
-        $client = new \Google_Client();
-
-        $client->setApplicationName($this->config->getApplicationName());
-        $client->setClientId($this->config->getClientId($tokenName));
-        $client->setClientSecret($this->config->getSecret($tokenName));
-        $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
-        $client->setScopes($this->config->getScopes($tokenName));
-
-        $accessToken = $this->getAccessToken($tokenName);
-        if ($accessToken) {
-            $client->setAccessToken((string) $accessToken);
-
-            $this->refreshToken($client);
-        }
-
-        return $client;
-    }
-
-    /**
-     * Get the refresh token
+     * If we got a refresh token, use it to retrieve a good access token
      *
      * @param \Google_Client $client
      */
@@ -107,33 +142,5 @@ class ClientProvider
         } catch (\Google_Auth_Exception $e) {}
 
         return false;
-    }
-
-    /**
-     * Check if a token is valid.
-     * This is an expensive operation that make a API call
-     *
-     * @param string|null $tokenName
-     *
-     * @return bool
-     */
-    public function isTokenValid($tokenName = null)
-    {
-        // We must fetch the client here. A client will automatically refresh the stored access token.
-        $client = $this->getClient($tokenName);
-        if (null === $accessToken = $client->getAccessToken()) {
-            return false;
-        }
-
-        $token = json_decode($accessToken)->access_token;
-        $url = sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
-        if (false === @file_get_contents($url)) {
-            return false;
-        }
-
-        // Retrieve HTTP status code
-        list($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
-
-        return $statusCode==200;
     }
 }

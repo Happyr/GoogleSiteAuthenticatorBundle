@@ -104,7 +104,6 @@ class AdminController extends Controller
                 $client->authenticate($request->query->get('code'));
                 $clientProvider->setAccessToken($client->getAccessToken(), $name);
 
-                //set flash
                 $flashBag->add('msg', 'Successfully authenticated!');
             } catch (\Google_Auth_Exception $e) {
                 $flashBag->add('error', $e->getMessage());
