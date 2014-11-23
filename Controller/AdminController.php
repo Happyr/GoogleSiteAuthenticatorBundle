@@ -52,6 +52,10 @@ class AdminController extends Controller
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
         $client = $clientProvider->getClient($name);
 
+        // This will allow us to get refresh the token
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+
         $request->getSession()->set(self::SESSION_KEY, $name);
 
         return $this->redirect($client->createAuthUrl());
@@ -69,7 +73,9 @@ class AdminController extends Controller
     {
         /** @var \Google_Client $client */
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
+        $client = $clientProvider->getClient($name);
 
+        $client->revokeToken();
         $clientProvider->setAccessToken(null, $name);
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));

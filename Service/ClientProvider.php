@@ -79,16 +79,12 @@ class ClientProvider
         $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
         $client->setScopes($this->config->getScopes($tokenName));
 
-        // This will allow us to refresh the token
-        $client->setAccessType('offline');
-
         $accessToken = $this->getAccessToken($tokenName);
         if ($accessToken) {
             $client->setAccessToken((string) $accessToken);
 
-            $this->refreshToken($client);
+            $this->refreshToken($client, $this->config->getKey($tokenName));
         }
-
 
         return $client;
     }
@@ -98,15 +94,17 @@ class ClientProvider
      *
      * @param \Google_Client $client
      */
-    private function refreshToken(\Google_Client $client)
+    private function refreshToken(\Google_Client $client, $tokenName)
     {
         $accessToken = $client->getAccessToken();
         $data = json_decode($accessToken, true);
 
-        if (isset($data['refresh_token'])) {
-            $client->refreshToken($data['refresh_token']);
-            return true;
-        }
+        try {
+            if (isset($data['refresh_token'])) {
+                $client->refreshToken($data['refresh_token']);
+                return true;
+            }
+        } catch (\Google_Auth_Exception $e) {}
 
         return false;
     }
