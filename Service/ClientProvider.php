@@ -48,7 +48,7 @@ class ClientProvider
         $client->setRedirectUri($this->config->getRedirectUrl($tokenName));
         $client->setScopes($this->config->getScopes($tokenName));
 
-        if (null === $accessToken = $this->getAccessToken($tokenName)) {
+        if (null !== $accessToken = $this->getAccessToken($tokenName)) {
             // set access token to client if we got one
             $client->setAccessToken((string) $accessToken);
 
