@@ -82,15 +82,13 @@ class ClientProvider
         // This will allow us to refresh the token
         $client->setAccessType('offline');
 
-        if (!empty($tokenName)) {
-            $accessToken = $this->getAccessToken($tokenName);
+        $accessToken = $this->getAccessToken($tokenName);
+        if ($accessToken) {
+            $client->setAccessToken((string) $accessToken);
 
-            if ($accessToken) {
-                $client->setAccessToken((string) $accessToken);
-
-                $this->refreshToken($client);
-            }
+            $this->refreshToken($client);
         }
+
 
         return $client;
     }
