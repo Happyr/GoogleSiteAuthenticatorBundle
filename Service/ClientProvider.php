@@ -83,7 +83,7 @@ class ClientProvider
         if ($accessToken) {
             $client->setAccessToken((string) $accessToken);
 
-            $this->refreshToken($client, $this->config->getKey($tokenName));
+            $this->refreshToken($client);
         }
 
         return $client;
@@ -94,7 +94,7 @@ class ClientProvider
      *
      * @param \Google_Client $client
      */
-    private function refreshToken(\Google_Client $client, $tokenName)
+    private function refreshToken(\Google_Client $client)
     {
         $accessToken = $client->getAccessToken();
         $data = json_decode($accessToken, true);
