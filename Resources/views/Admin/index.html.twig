@@ -2,19 +2,38 @@
 
 {% block content %}
 
-    <div id="flash">
+    <div id="description-wrapper">
+        <h1>Google site authentication</h1>
+        <p>This is a page for the site admin where you manage the authentication tokens. Below
+        is a table over the configured tokens. </p>
+
+        <p>When clicking on "Authenticate" we will ask for the permissions you specified in the <i>scopes</i> config
+            and then store an authentication access token until it is revoked by you. The authentication access token
+            will be stored with the cache service you provided in the <i>happyr_google_site_authenticator.cache_service</i>.
+            If the cache is cleared you need to re-authenticate the tokens.</p>
+    </div>
+
+
+    <div id="flash-wrapper">
         {% for flashMessage in app.session.flashbag.get('msg') %}
-            <div class="flash">
+            <div class="flash success">
+                {{ flashMessage|trans }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="flash error">
                 {{ flashMessage|trans }}
             </div>
         {% endfor %}
     </div>
 
-    <table>
+    <hr />
+
+    <table id="token-table">
         <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th class="token-name">Token name</th>
+            <th class="token-status">Status</th>
+            <th class="token-action">Action</th>
         </tr>
         {% for name,token in tokens %}
             <tr>
@@ -28,7 +47,15 @@
                     {% endif %}
                 </td>
             </tr>
+
         {% endfor %}
     </table>
+
+    <hr />
+
+    <p>
+      If you have questions, read the <a href="https://github.com/Happyr/GoogleSiteAuthenticatorBundle">documentation</a>
+        or open a issue on <a href="https://github.com/Happyr/GoogleSiteAuthenticatorBundle/issues">Github</a>.
+    </p>
 
 {% endblock %}

@@ -78,6 +78,8 @@ class AdminController extends Controller
         $client->revokeToken();
         $clientProvider->setAccessToken(null, $name);
 
+        $this->get('session')->getFlashbag()->add('msg', 'Token was revoked.');
+
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
     }
 
@@ -96,21 +98,20 @@ class AdminController extends Controller
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
         $client = $clientProvider->getClient($name);
 
+        $flashBag = $this->get('session')->getFlashbag();
         if ($request->query->has('code')) {
             try {
                 $client->authenticate($request->query->get('code'));
                 $clientProvider->setAccessToken($client->getAccessToken(), $name);
 
-                $message = 'Authenticated!';
+                //set flash
+                $flashBag->add('msg', 'Successfully authenticated!');
             } catch (\Google_Auth_Exception $e) {
-                $message = $e->getMessage();
+                $flashBag->add('error', $e->getMessage());
             }
         } else {
-            $message = 'Authentication aborted';
+            $flashBag->add('error', 'Authentication aborted.');
         }
-
-        //set flash
-        $this->get('session')->getFlashbag()->add('msg', $message);
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
     }
