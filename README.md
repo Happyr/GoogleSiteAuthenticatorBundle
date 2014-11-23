@@ -79,7 +79,7 @@ happyr_google_site_authenticator:
       redirect_url: 'http://www.domain.com/admin/authenticate-google/return-url'
       scopes: ['https://www.googleapis.com/auth/drive']
 ```
-You will find all available scopes [here](https://developers.google.com/drive/web/scopes).
+You will find all available scopes [here](https://developers.google.com/oauthplayground/).
 
 The config above will configure a token called *google_drive*. You may, of course, configure more tokens. To get a
 Google_Client instance with those credentials:
