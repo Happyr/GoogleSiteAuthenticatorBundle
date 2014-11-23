@@ -11,3 +11,9 @@ services:
 
   happyr.google.client_provider:
     alias: happyr.google_site_authenticator.client_provider
+
+  happyr.google_site_authenticator.client:
+    class: Google_Client
+    factory_service: happyr.google_site_authenticator.client_provider
+    factory_method: getClient
+    arguments: [~]

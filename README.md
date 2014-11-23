@@ -87,7 +87,16 @@ Google_Client instance with those credentials:
 ``` php
 $clientProvider = $this->get('happyr.google.client_provider');
 $client = $clientProvider->getClient('google_drive');
+
+// or don't use the client provider
+$client = $this->get('google.client.google_drive');
+
+// if you only have one token configured
+$client = $this->get('google.client');
+
 ```
+
+
 
 ## Authenticating
 
