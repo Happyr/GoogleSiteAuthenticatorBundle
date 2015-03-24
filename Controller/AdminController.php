@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author Tobias Nyholm
+ * A controller made for administrators to authenticate and revoke access to google
  */
 class AdminController extends Controller
 {

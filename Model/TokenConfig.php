@@ -2,11 +2,10 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 
-use Happyr\GoogleSiteAuthenticatorBundle\Storage\StorageInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * This class holds all the tokens' configuration
  */
 class TokenConfig
 {

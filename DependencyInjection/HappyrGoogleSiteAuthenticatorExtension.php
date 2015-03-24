@@ -22,7 +22,6 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('storage.yml');
 
         // Configure the correct storage
         $storage=new Reference($config['cache_service']);
