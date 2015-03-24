@@ -5,7 +5,7 @@ namespace Happyr\GoogleSiteAuthenticatorBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class HappyrGoogleSiteAuthenticatorBundle
+ * Class HappyrGoogleSiteAuthenticatorBundle.
  */
 class HappyrGoogleSiteAuthenticatorBundle extends Bundle
 {
