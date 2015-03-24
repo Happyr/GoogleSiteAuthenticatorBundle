@@ -45,7 +45,7 @@ class TokenConfig
      */
     public function getKey($key = null)
     {
-        if ($key == null) {
+        if ($key === null) {
             return $this->defaultKey;
         }
 
