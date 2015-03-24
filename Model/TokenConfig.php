@@ -2,11 +2,9 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 
-use Happyr\GoogleSiteAuthenticatorBundle\Storage\StorageInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * This class holds all the tokens' configuration.
  */
 class TokenConfig
 {
@@ -39,15 +37,15 @@ class TokenConfig
     }
 
     /**
-     * Get the key from the argument or the default key
+     * Get the key from the argument or the default key.
      *
      * @param null $key
      *
      * @return string
      */
-    public function getKey($key=null)
+    public function getKey($key = null)
     {
-        if ($key==null) {
+        if ($key === null) {
             return $this->defaultKey;
         }
 
@@ -59,7 +57,7 @@ class TokenConfig
     }
 
     /**
-     * Get all keys
+     * Get all keys.
      *
      * @return array
      */
@@ -71,7 +69,7 @@ class TokenConfig
     /**
      * @return string
      */
-    public function getClientId($tokenName=null)
+    public function getClientId($tokenName = null)
     {
         return $this->tokens[$this->getKey($tokenName)]['client_id'];
     }
@@ -79,7 +77,7 @@ class TokenConfig
     /**
      * @return string
      */
-    public function getRedirectUrl($tokenName=null)
+    public function getRedirectUrl($tokenName = null)
     {
         return $this->tokens[$this->getKey($tokenName)]['redirect_url'];
     }
@@ -87,7 +85,7 @@ class TokenConfig
     /**
      * @return array
      */
-    public function getScopes($tokenName=null)
+    public function getScopes($tokenName = null)
     {
         return $this->tokens[$this->getKey($tokenName)]['scopes'];
     }
@@ -95,7 +93,7 @@ class TokenConfig
     /**
      * @return string
      */
-    public function getSecret($tokenName=null)
+    public function getSecret($tokenName = null)
     {
         return $this->tokens[$this->getKey($tokenName)]['client_secret'];
     }
