@@ -23,7 +23,6 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        /* @var \Google_Client $client */
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
         $tokenConfig = $this->get('happyr.google_site_authenticator.token_config');
         $tokenNames = $tokenConfig->getAllKeys();
