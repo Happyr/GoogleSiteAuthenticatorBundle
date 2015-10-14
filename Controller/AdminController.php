@@ -34,12 +34,12 @@ class AdminController extends Controller
         }
 
         return array(
-            'tokens'=>$tokens,
+            'tokens' => $tokens,
         );
     }
 
     /**
-     * This action starts the authentication
+     * This action starts the authentication.
      *
      * @param Request $request
      * @param $name
@@ -62,7 +62,7 @@ class AdminController extends Controller
     }
 
     /**
-     * This action revokes the authentication token. This make sure the token can not be used on any other site
+     * This action revokes the authentication token. This make sure the token can not be used on any other site.
      *
      * @param Request $request
      * @param $name
@@ -82,7 +82,6 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
     }
-
 
     /**
      * This action removes the authentication token form the storage.
@@ -104,7 +103,7 @@ class AdminController extends Controller
     }
 
     /**
-     * This action is used when the user has authenticated with google
+     * This action is used when the user has authenticated with google.
      *
      * @param Request $request
      *
@@ -112,7 +111,7 @@ class AdminController extends Controller
      */
     public function returnAction(Request $request)
     {
-        $name=$request->getSession()->get(self::SESSION_KEY, null);
+        $name = $request->getSession()->get(self::SESSION_KEY, null);
 
         /** @var \Google_Client $client */
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
@@ -134,4 +133,4 @@ class AdminController extends Controller
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
     }
-} 
+}

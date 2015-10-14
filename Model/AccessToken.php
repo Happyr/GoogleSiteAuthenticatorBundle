@@ -60,7 +60,6 @@ class AccessToken
     }
 
     /**
-     *
      * @return \DateTime
      */
     public function getExpires()

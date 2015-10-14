@@ -5,7 +5,6 @@ namespace Happyr\GoogleSiteAuthenticatorBundle\Service;
 use Doctrine\Common\Cache\CacheProvider;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\AccessToken;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -61,7 +60,7 @@ class ClientProvider
 
     /**
      * Check if a token is valid.
-     * This is an expensive operation that makes multiple API calls
+     * This is an expensive operation that makes multiple API calls.
      *
      * @param string|null $tokenName
      *
@@ -85,21 +84,22 @@ class ClientProvider
         // Retrieve HTTP status code
         list($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
 
-        return $statusCode==200;
+        return $statusCode == 200;
     }
 
     /**
-     * Store the access token in the storage
+     * Store the access token in the storage.
      *
-     * @param string $accessToken
+     * @param string      $accessToken
      * @param string|null $tokenName
      */
     public function setAccessToken($accessToken, $tokenName = null)
     {
         $name = $this->config->getKey($tokenName);
 
-        if ($accessToken===null) {
+        if ($accessToken === null) {
             $this->storage->delete($name);
+
             return;
         }
 
@@ -107,7 +107,7 @@ class ClientProvider
     }
 
     /**
-     * Get access token from storage
+     * Get access token from storage.
      *
      * @param null $tokenName
      *
@@ -118,14 +118,14 @@ class ClientProvider
         $accessToken = $this->storage->fetch($this->config->getKey($tokenName));
 
         if (empty($accessToken)) {
-            return null;
+            return;
         }
 
         return $accessToken;
     }
 
     /**
-     * If we got a refresh token, use it to retrieve a good access token
+     * If we got a refresh token, use it to retrieve a good access token.
      *
      * @param \Google_Client $client
      */
@@ -137,9 +137,11 @@ class ClientProvider
         try {
             if (isset($data['refresh_token'])) {
                 $client->refreshToken($data['refresh_token']);
+
                 return true;
             }
-        } catch (\Google_Auth_Exception $e) {}
+        } catch (\Google_Auth_Exception $e) {
+        }
 
         return false;
     }
