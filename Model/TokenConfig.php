@@ -3,7 +3,7 @@
 namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 
 /**
- * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * This class holds all the tokens' configuration.
  */
 class TokenConfig
 {
@@ -44,7 +44,7 @@ class TokenConfig
      */
     public function getKey($key = null)
     {
-        if ($key == null) {
+        if ($key === null) {
             return $this->defaultKey;
         }
 

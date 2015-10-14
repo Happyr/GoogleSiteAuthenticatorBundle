@@ -14,6 +14,5 @@ services:
 
   happyr.google_site_authenticator.client:
     class: Google_Client
-    factory_service: happyr.google_site_authenticator.client_provider
-    factory_method: getClient
+    factory: [@happyr.google_site_authenticator.client_provider, getClient]
     arguments: [~]
