@@ -61,7 +61,7 @@ class AdminController extends Controller
     }
 
     /**
-     * This action starts the authentication.
+     * This action revokes the authentication token. This make sure the token can not be used on any other site.
      *
      * @param Request $request
      * @param $name
@@ -78,6 +78,25 @@ class AdminController extends Controller
         $clientProvider->setAccessToken(null, $name);
 
         $this->get('session')->getFlashbag()->add('msg', 'Token was revoked.');
+
+        return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
+    }
+
+    /**
+     * This action removes the authentication token form the storage.
+     *
+     * @param Request $request
+     * @param $name
+     *
+     * @return Response
+     */
+    public function removeAction($name)
+    {
+        /** @var \Google_Client $client */
+        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
+        $clientProvider->setAccessToken(null, $name);
+
+        $this->get('session')->getFlashbag()->add('msg', 'Token was removed.');
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
     }

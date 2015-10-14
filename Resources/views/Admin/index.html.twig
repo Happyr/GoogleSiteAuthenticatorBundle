@@ -11,6 +11,9 @@
             and then store an authentication access token until it is revoked by you. The authentication access token
             will be stored with the cache service you provided in the <i>happyr_google_site_authenticator.cache_service</i>.
             If the cache is cleared you need to re-authenticate the tokens.</p>
+
+        <p>You can remove a token from the cache by clicking "Remove". If you want the token to be invalidated you may
+            press "Revoke". This will affect all sites using this token. </p>
     </div>
 
 
@@ -41,7 +44,8 @@
                 <td>{% if token %}Valid{% else %}Missing{% endif %}</td>
                 <td>
                     {% if token %}
-                        <a href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Revoke</a>
+                        <a href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Remove</a> |
+                        <a style="color:red" href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Revoke</a>
                     {% else %}
                         <a href="{{ path('happyr.google_site_authenticator.authenticate', {name:name}) }}">Authenticate</a>
                     {% endif %}

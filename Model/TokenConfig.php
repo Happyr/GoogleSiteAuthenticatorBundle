@@ -2,7 +2,6 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
 
-
 /**
  * This class holds all the tokens' configuration.
  */
