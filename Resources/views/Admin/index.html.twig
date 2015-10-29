@@ -44,7 +44,7 @@
                 <td>{% if token %}Valid{% else %}Missing{% endif %}</td>
                 <td>
                     {% if token %}
-                        <a href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Remove</a> |
+                        <a href="{{ path('happyr.google_site_authenticator.remove', {name:name}) }}">Remove</a> |
                         <a style="color:red" href="{{ path('happyr.google_site_authenticator.revoke', {name:name}) }}">Revoke</a>
                     {% else %}
                         <a href="{{ path('happyr.google_site_authenticator.authenticate', {name:name}) }}">Authenticate</a>
