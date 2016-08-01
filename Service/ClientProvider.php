@@ -96,14 +96,15 @@ class ClientProvider
     public function setAccessToken($accessToken, $tokenName = null)
     {
         $name = $this->config->getKey($tokenName);
+        $cacheKey = $this->creteCacheKey($name);
 
         if ($accessToken === null) {
-            $this->pool->deleteItem($name);
+            $this->pool->deleteItem($cacheKey);
 
             return;
         }
 
-        $item = $this->pool->getItem($name)->set(new AccessToken($name, $accessToken));
+        $item = $this->pool->getItem($cacheKey)->set(new AccessToken($name, $accessToken));
         $this->pool->save($item);
     }
 
@@ -116,7 +117,8 @@ class ClientProvider
      */
     protected function getAccessToken($tokenName = null)
     {
-        $item = $this->pool->getItem($this->config->getKey($tokenName));
+        $cacheKey = $this->creteCacheKey($this->config->getKey($tokenName));
+        $item = $this->pool->getItem($cacheKey);
 
         if (!$item->isHit()) {
             return;
@@ -145,5 +147,17 @@ class ClientProvider
         }
 
         return false;
+    }
+
+    /**
+     * Create a cache key.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    private function creteCacheKey($name)
+    {
+        return sha1('happyr_google-site-authenticator_'.$name);
     }
 }
