@@ -11,12 +11,12 @@ class HappyrGoogleSiteAuthenticatorExtensionTest extends AbstractExtensionTestCa
     {
         return [
             'cache_service' => 'cache',
-            'tokens'        => [
+            'tokens' => [
                 'google_drive' => [
-                    'client_id'     => '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
+                    'client_id' => '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
                     'client_secret' => 'xxxxx-xxxxx_xxxxxxxxxxxx',
-                    'redirect_url'  => 'http://www.domain.com/admin/authenticate-google/return-url',
-                    'scopes'        => ['https://www.googleapis.com/auth/drive'],
+                    'redirect_url' => 'http://www.domain.com/admin/authenticate-google/return-url',
+                    'scopes' => ['https://www.googleapis.com/auth/drive'],
                 ],
             ],
         ];
