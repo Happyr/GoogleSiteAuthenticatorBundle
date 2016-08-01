@@ -27,14 +27,14 @@ class AdminController extends Controller
         $tokenConfig = $this->get('happyr.google_site_authenticator.token_config');
         $tokenNames = $tokenConfig->getAllKeys();
 
-        $tokens = array();
+        $tokens = [];
         foreach ($tokenNames as $tokenName) {
             $tokens[$tokenName] = $clientProvider->isTokenValid($tokenName);
         }
 
-        return array(
+        return [
             'tokens' => $tokens,
-        );
+        ];
     }
 
     /**
@@ -92,7 +92,7 @@ class AdminController extends Controller
      */
     public function removeAction($name)
     {
-        /** @var \Google_Client $client */
+        /* @var \Google_Client $client */
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
         $clientProvider->setAccessToken(null, $name);
 

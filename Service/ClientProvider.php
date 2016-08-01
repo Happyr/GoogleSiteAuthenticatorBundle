@@ -22,7 +22,7 @@ class ClientProvider
     private $pool;
 
     /**
-     * @param TokenConfig $config
+     * @param TokenConfig            $config
      * @param CacheItemPoolInterface $pool
      */
     public function __construct(TokenConfig $config, CacheItemPoolInterface $pool)
@@ -141,7 +141,8 @@ class ClientProvider
 
                 return true;
             }
-        } catch (\Google_Auth_Exception $e) {}
+        } catch (\Google_Auth_Exception $e) {
+        }
 
         return false;
     }
