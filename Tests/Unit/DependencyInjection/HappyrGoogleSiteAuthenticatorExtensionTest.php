@@ -2,27 +2,22 @@
 
 namespace Tests\Unit\DependencyInjection;
 
-use Happyr\GoogleSiteAuthenticatorBundle\DependencyInjection\HappyrGoogleAnalyticsExtension;
 use Happyr\GoogleSiteAuthenticatorBundle\DependencyInjection\HappyrGoogleSiteAuthenticatorExtension;
-use Happyr\GoogleSiteAuthenticatorBundle\Service\DataFetcher;
-use Happyr\GoogleSiteAuthenticatorBundle\Service\Tracker;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Symfony\Component\DependencyInjection\Reference;
 
 class HappyrGoogleSiteAuthenticatorExtensionTest extends AbstractExtensionTestCase
 {
-
     protected function getMinimalConfiguration()
     {
         return [
-            'cache_service'=>'cache',
-            'tokens'=> [
-                'google_drive'=> [
-                    'client_id'=> '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-                    'client_secret'=> 'xxxxx-xxxxx_xxxxxxxxxxxx',
-                    'redirect_url'=> 'http://www.domain.com/admin/authenticate-google/return-url',
-                    'scopes'=> ['https://www.googleapis.com/auth/drive'],
-                ]
+            'cache_service' => 'cache',
+            'tokens'        => [
+                'google_drive' => [
+                    'client_id'     => '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
+                    'client_secret' => 'xxxxx-xxxxx_xxxxxxxxxxxx',
+                    'redirect_url'  => 'http://www.domain.com/admin/authenticate-google/return-url',
+                    'scopes'        => ['https://www.googleapis.com/auth/drive'],
+                ],
             ],
         ];
     }
@@ -42,6 +37,4 @@ class HappyrGoogleSiteAuthenticatorExtensionTest extends AbstractExtensionTestCa
         $this->assertContainerBuilderHasService('google.client.google_drive');
         $this->assertContainerBuilderHasService('google.client');
     }
-
-
 }
