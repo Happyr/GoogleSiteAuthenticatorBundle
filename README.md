@@ -69,7 +69,7 @@ above you could use the following values:
 
 ``` yml
 happyr_google_site_authenticator:
-  cache_service: 'cache.provider.my_memcached.my_redis'
+  cache_service: 'cache.provider.my_redis'
   tokens:
     google_drive:
       client_id: '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com'
