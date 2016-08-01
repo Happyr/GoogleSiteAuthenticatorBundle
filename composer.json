@@ -13,11 +13,12 @@
     ],
     "require": {
         "php": ">=5.4",
-        "doctrine/doctrine-cache-bundle": "~1.0",
+        "psr/cache": "^1.0",
+        "psr/cache-implementation": "^1.0",
         "google/apiclient": "~1.1"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Happyr\\GoogleSiteAuthenticatorBundle\\": ""
         }
     },

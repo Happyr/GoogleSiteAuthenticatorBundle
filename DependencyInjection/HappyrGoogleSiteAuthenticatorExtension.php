@@ -23,12 +23,11 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        // Configure the correct storage
-        $storage = new Reference($config['cache_service']);
+        // Configure the correct PSR-6 cache
         $clientProvider = $container->getDefinition('happyr.google_site_authenticator.client_provider');
-        $clientProvider->replaceArgument(1, $storage);
+        $clientProvider->replaceArgument(1, new Reference($config['cache_service']));
 
-        // Configure ClientProviderConfig
+        // Configure TokenConfig
         $definition = $container->getDefinition('happyr.google_site_authenticator.token_config');
         $definition->replaceArgument(0, $config['tokens']);
 

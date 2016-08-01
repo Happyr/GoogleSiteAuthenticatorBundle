@@ -12,16 +12,15 @@ This bundle is using a normal OAuth for a web application, but it authenticates 
 
 ## Install
 
-Use composer to get the bundle:
+Use composer to get the bundle. You do also have to get a PSR-6 cache implementation. 
 
 ```bash
-$ php composer.phar require happyr/google-site-authenticator-bundle dev-master
+$ php composer.phar require happyr/google-site-authenticator-bundle cache/redis-adapter
 ```
 
-Activate this bundle and DoctrineCacheBundle in AppKernel.
+Activate this bundle in AppKernel.
 
 ```php
-new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle()
 new Happyr\GoogleSiteAuthenticatorBundle\HappyrGoogleSiteAuthenticatorBundle(),
 ```
 
@@ -51,26 +50,26 @@ When you are done you will get a *client id* and a *client secret*. Save those f
 
 ### Configure
 
-This bundle will fetch an access token and save it to cache. The [DoctrineCacheBundle](https://github.com/doctrine/DoctrineCacheBundle)
+This bundle will fetch an access token and save it to cache. The [PHPCacheAdapterBundle](https://github.com/php-cache/adapter-bundle)
 is an excellent bundle for this. You may use one of many predefined cache providers like; file_system, apc, mongodb etc.
+Read more about caching here: http://www.php-cache.com/
+
 It also allows you to create your own cache provider. Here is an example configuration:
 
 ``` yml
-doctrine_cache:
+cache_adapter:
   providers:
-    file:
-      file_system:
-        extension: '.token'
-        directory: '%kernel.root_dir%/var/storage/fs_cache/'
+    my_redis:
+      factory: 'cache.factory.redis'
 ```
 
-To configure the Happyr Google Site Authenticator bundle you need to add your api credentials and select a service
-extending `Doctrine\Common\Cache\CacheProvider` as a cache service. If you are using the configuration
+To configure the Happyr Google Site Authenticator bundle you need to add your API credentials and select a service
+extending `Psr\Cache\CacheItemInterface`. If you are using the configuration
 above you could use the following values:
 
 ``` yml
 happyr_google_site_authenticator:
-  cache_service: 'doctrine_cache.providers.file'
+  cache_service: 'cache.provider.my_memcached.my_redis'
   tokens:
     google_drive:
       client_id: '00000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com'
@@ -95,12 +94,10 @@ $client = $this->get('google.client');
 
 ```
 
-
-
 ## Authenticating
 
 To make sure you fetch an access token you need to navigate to `http://www.domain.com/admin/authenticate-google` and
 click on *Authenticate*. You will be asked to sign in with your Google account and grant the permissions. The access token
 retrieved will be saved by the cache service. You want to make sure this is stored for a very long time.
 
-When you are authenticated you may use happyr.google.client_provider to get an authenticated client.
+When you are authenticated you may use `happyr.google.client_provider` to get an authenticated client.

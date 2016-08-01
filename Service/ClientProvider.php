@@ -2,9 +2,9 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Service;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\AccessToken;
 use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -17,18 +17,18 @@ class ClientProvider
     private $config;
 
     /**
-     * @var CacheProvider storage
+     * @var CacheItemPoolInterface storage
      */
-    private $storage;
+    private $pool;
 
     /**
      * @param TokenConfig $config
-     * @param $storage
+     * @param CacheItemPoolInterface $pool
      */
-    public function __construct(TokenConfig $config, CacheProvider $storage)
+    public function __construct(TokenConfig $config, CacheItemPoolInterface $pool)
     {
         $this->config = $config;
-        $this->storage = $storage;
+        $this->pool = $pool;
     }
 
     /**
@@ -98,30 +98,31 @@ class ClientProvider
         $name = $this->config->getKey($tokenName);
 
         if ($accessToken === null) {
-            $this->storage->delete($name);
+            $this->pool->deleteItem($name);
 
             return;
         }
 
-        $this->storage->save($name, new AccessToken($name, $accessToken));
+        $item = $this->pool->getItem($name)->set(new AccessToken($name, $accessToken));
+        $this->pool->save($item);
     }
 
     /**
      * Get access token from storage.
      *
-     * @param null $tokenName
+     * @param string|null $tokenName
      *
-     * @return AccessToken
+     * @return AccessToken|null
      */
     protected function getAccessToken($tokenName = null)
     {
-        $accessToken = $this->storage->fetch($this->config->getKey($tokenName));
+        $item = $this->pool->getItem($this->config->getKey($tokenName));
 
-        if (empty($accessToken)) {
+        if (!$item->isHit()) {
             return;
         }
 
-        return $accessToken;
+        return $item->get();
     }
 
     /**
@@ -140,8 +141,7 @@ class ClientProvider
 
                 return true;
             }
-        } catch (\Google_Auth_Exception $e) {
-        }
+        } catch (\Google_Auth_Exception $e) {}
 
         return false;
     }
