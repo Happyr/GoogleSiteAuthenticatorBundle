@@ -1,6 +1,6 @@
 # Happyr Google Site Authenticator Bundle
 
-[![Latest Version](https://img.shields.io/github/release/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://github.com/happyr/Happyr/GoogleSiteAuthenticatorBundle/releases)
+[![Latest Version](https://img.shields.io/github/release/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://github.com/Happyr/GoogleSiteAuthenticatorBundle/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/travis/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://travis-ci.org/Happyr/GoogleSiteAuthenticatorBundle)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/Happyr/GoogleSiteAuthenticatorBundle)
