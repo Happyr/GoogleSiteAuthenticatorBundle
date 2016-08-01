@@ -28,6 +28,10 @@
         "psr-4": {
             "Happyr\\GoogleSiteAuthenticatorBundle\\": ""
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
     }
 }
 

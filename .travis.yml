@@ -8,8 +8,22 @@ php:
     - 7.1
     - hhvm
 
+branches:
+    except:
+        - /^analysis-.*$/
+
+matrix:
+    fast_finish: true
+    include:
+        - php: 5.4
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
+
 install:
-  - composer update
+    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist --no-interaction
 
 script:
-  - phpunit
+    - $TEST_COMMAND
+
+after_success:
+    - if [[ $COVERAGE = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+    - if [[ $COVERAGE = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi

@@ -1,5 +1,12 @@
 # Happyr Google Site Authenticator Bundle
 
+[![Latest Version](https://img.shields.io/github/release/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://github.com/happyr/Happyr/GoogleSiteAuthenticatorBundle/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build Status](https://img.shields.io/travis/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://travis-ci.org/Happyr/GoogleSiteAuthenticatorBundle)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/Happyr/GoogleSiteAuthenticatorBundle)
+[![Quality Score](https://img.shields.io/scrutinizer/g/Happyr/GoogleSiteAuthenticatorBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/Happyr/GoogleSiteAuthenticatorBundle)
+[![Total Downloads](https://img.shields.io/packagist/dt/happyr/google-site-authenticator-bundle.svg?style=flat-square)](https://packagist.org/packages/happyr/google-site-authenticator-bundle)
+
 In some situations you want a website to make API request on the behalf of you (not your users). Example when
 you want to fetch website data from Google Analytics or upload database dumps to Google Drive. The solution Google
 offers for this is a [Domain-Wide Delegation of Authority](https://developers.google.com/drive/web/delegation). But
