@@ -15,7 +15,7 @@
         "php": "^5.5 || ^7.0",
         "psr/cache": "^1.0",
         "psr/cache-implementation": "^1.0",
-        "google/apiclient": "~1.1 <=1.1.7"
+        "google/apiclient": "~1.1, <=1.1.7"
     },
     "require-dev": {
       "cache/void-adapter": "^0.3",

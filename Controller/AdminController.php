@@ -17,7 +17,7 @@ class AdminController extends Controller
     /**
      * @param Request $request
      *
-     * @Template()
+     * @Template("HappyrGoogleSiteAuthenticatorBundle:admin:index.html.twig")
      *
      * @return array
      */
