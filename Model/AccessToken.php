@@ -16,7 +16,8 @@ class AccessToken
     {
         $this->name = $name;
         $this->token = $token;
-        $this->initTimestamps();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function __toString()
@@ -46,19 +47,8 @@ class AccessToken
     public function setToken(string $token): self
     {
         $this->token = $token;
-        $this->updateTimestamp();
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
-    }
-
-    protected function updateTimestamp(): void
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    protected function initTimestamps(): void
-    {
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
     }
 }
