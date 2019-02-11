@@ -7,31 +7,12 @@ namespace Happyr\GoogleSiteAuthenticatorBundle\Model;
  */
 class AccessToken
 {
-    /**
-     * @var string name
-     */
-    protected $name;
+    private $name;
+    private $token;
+    private $createdAt;
+    private $updatedAt;
 
-    /**
-     * @var string token
-     */
-    protected $token;
-
-    /**
-     * @var \DateTime createdAt
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime updatedAt
-     */
-    protected $updatedAt;
-
-    /**
-     * @param string $name
-     * @param string $token
-     */
-    public function __construct($name, $token)
+    public function __construct(string $name, string $token)
     {
         $this->name = $name;
         $this->token = $token;
@@ -43,41 +24,26 @@ class AccessToken
         return $this->getToken();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getExpires()
+    public function getExpires(): \DateTimeInterface
     {
-        $data = json_decode($this->getToken(), true);
-        $exp = new \DateTime();
-        $exp->setTimestamp($data['created'])
-            ->modify('+'.$data['expires_in'].'seconds');
+        $data = \json_decode($this->getToken(), true);
+        $exp = new \DateTimeImmutable();
 
-        return $exp;
+        return $exp->setTimestamp($data['created'])
+            ->modify('+'.$data['expires_in'].'seconds');
     }
 
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
-    public function setToken($token)
+    public function setToken(string $token): self
     {
         $this->token = $token;
         $this->updateTimestamp();
@@ -85,12 +51,12 @@ class AccessToken
         return $this;
     }
 
-    protected function updateTimestamp()
+    protected function updateTimestamp(): void
     {
         $this->updatedAt = new \DateTime();
     }
 
-    protected function initTimestamps()
+    protected function initTimestamps(): void
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();

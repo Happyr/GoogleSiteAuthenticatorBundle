@@ -3,6 +3,7 @@
 namespace Happyr\GoogleSiteAuthenticatorBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
@@ -32,7 +33,7 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
         $definition->replaceArgument(0, $config['tokens']);
 
         // make sure we shortcut the service name
-        $decorator = new DefinitionDecorator('happyr.google_site_authenticator.client');
+        $decorator = new ChildDefinition('happyr.google_site_authenticator.client');
         foreach ($config['tokens'] as $name => $tokenConfig) {
             $service = $container->setDefinition('google.client.'.$name, $decorator);
             $service->replaceArgument(0, $name);

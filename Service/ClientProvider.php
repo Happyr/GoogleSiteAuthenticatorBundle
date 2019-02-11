@@ -12,7 +12,7 @@ use Psr\Cache\CacheItemPoolInterface;
 class ClientProvider
 {
     /**
-     * @var \Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig config
+     * @var TokenConfig config
      */
     private $config;
 
@@ -21,22 +21,13 @@ class ClientProvider
      */
     private $pool;
 
-    /**
-     * @param TokenConfig            $config
-     * @param CacheItemPoolInterface $pool
-     */
     public function __construct(TokenConfig $config, CacheItemPoolInterface $pool)
     {
         $this->config = $config;
         $this->pool = $pool;
     }
 
-    /**
-     * @param string|null $tokenName
-     *
-     * @return \Google_Client
-     */
-    public function getClient($tokenName = null)
+    public function getClient(string $tokenName = null): \Google_Client
     {
         $client = new \Google_Client();
 
@@ -61,12 +52,8 @@ class ClientProvider
     /**
      * Check if a token is valid.
      * This is an expensive operation that makes multiple API calls.
-     *
-     * @param string|null $tokenName
-     *
-     * @return bool
      */
-    public function isTokenValid($tokenName = null)
+    public function isTokenValid(string $tokenName = null): bool
     {
         // We must fetch the client here. A client will automatically refresh the stored access token.
         $client = $this->getClient($tokenName);
@@ -75,30 +62,27 @@ class ClientProvider
         }
 
         // Get the token string from access token
-        $token = json_decode($accessToken)->access_token;
-        $url = sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
-        if (false === @file_get_contents($url)) {
+        $token = \json_decode($accessToken)->access_token;
+        $url = \sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
+        if (false === @\file_get_contents($url)) {
             return false;
         }
 
         // Retrieve HTTP status code
-        list($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
+        list($version, $statusCode, $msg) = \explode(' ', $http_response_header[0], 3);
 
-        return $statusCode == 200;
+        return 200 === $statusCode;
     }
 
     /**
      * Store the access token in the storage.
-     *
-     * @param string      $accessToken
-     * @param string|null $tokenName
      */
-    public function setAccessToken($accessToken, $tokenName = null)
+    public function setAccessToken(string $accessToken, string $tokenName = null)
     {
         $name = $this->config->getKey($tokenName);
         $cacheKey = $this->creteCacheKey($name);
 
-        if ($accessToken === null) {
+        if (null === $accessToken) {
             $this->pool->deleteItem($cacheKey);
 
             return;
@@ -110,18 +94,14 @@ class ClientProvider
 
     /**
      * Get access token from storage.
-     *
-     * @param string|null $tokenName
-     *
-     * @return AccessToken|null
      */
-    protected function getAccessToken($tokenName = null)
+    protected function getAccessToken(string $tokenName = null): ?AccessToken
     {
         $cacheKey = $this->creteCacheKey($this->config->getKey($tokenName));
         $item = $this->pool->getItem($cacheKey);
 
         if (!$item->isHit()) {
-            return;
+            return null;
         }
 
         return $item->get();
@@ -129,13 +109,11 @@ class ClientProvider
 
     /**
      * If we got a refresh token, use it to retrieve a good access token.
-     *
-     * @param \Google_Client $client
      */
-    private function refreshToken(\Google_Client $client)
+    private function refreshToken(\Google_Client $client): bool
     {
         $accessToken = $client->getAccessToken();
-        $data = json_decode($accessToken, true);
+        $data = \json_decode($accessToken, true);
 
         try {
             if (isset($data['refresh_token'])) {
@@ -149,15 +127,8 @@ class ClientProvider
         return false;
     }
 
-    /**
-     * Create a cache key.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    private function creteCacheKey($name)
+    private function creteCacheKey(string $name): string
     {
-        return sha1('happyr_google-site-authenticator_'.$name);
+        return \sha1('happyr_google-site-authenticator_'.$name);
     }
 }

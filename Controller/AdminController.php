@@ -13,14 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminController extends Controller
 {
     const SESSION_KEY = 'google_token_name';
-
-    /**
-     * @param Request $request
-     *
-     * @Template("HappyrGoogleSiteAuthenticatorBundle:admin:index.html.twig")
-     *
-     * @return array
-     */
+    
     public function indexAction()
     {
         $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
@@ -32,9 +25,9 @@ class AdminController extends Controller
             $tokens[$tokenName] = $clientProvider->isTokenValid($tokenName);
         }
 
-        return [
+        return $this->render('HappyrGoogleSiteAuthenticatorBundle:admin:index.html.twig', [
             'tokens' => $tokens,
-        ];
+        ]);
     }
 
     /**

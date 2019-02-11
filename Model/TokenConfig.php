@@ -9,9 +9,6 @@ class TokenConfig
 {
     const APPLICATION_NAME = 'GoogleAuthenticator';
 
-    /**
-     * @var array tokens
-     */
     private $tokens;
 
     /**
@@ -37,12 +34,8 @@ class TokenConfig
 
     /**
      * Get the key from the argument or the default key.
-     *
-     * @param null $key
-     *
-     * @return string
      */
-    public function getKey($key = null)
+    public function getKey(string $key = null): string
     {
         if ($key === null) {
             return $this->defaultKey;
@@ -60,7 +53,7 @@ class TokenConfig
      *
      * @return array
      */
-    public function getAllKeys()
+    public function getAllKeys(): array
     {
         return array_keys($this->tokens);
     }
@@ -68,7 +61,7 @@ class TokenConfig
     /**
      * @return string
      */
-    public function getClientId($tokenName = null)
+    public function getClientId(string $tokenName = null)
     {
         return $this->tokens[$this->getKey($tokenName)]['client_id'];
     }
@@ -97,10 +90,7 @@ class TokenConfig
         return $this->tokens[$this->getKey($tokenName)]['client_secret'];
     }
 
-    /**
-     * @return string
-     */
-    public function getApplicationName()
+    public function getApplicationName(): string
     {
         return self::APPLICATION_NAME;
     }
