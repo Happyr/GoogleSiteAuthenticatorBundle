@@ -71,7 +71,7 @@ class ClientProvider
         // Retrieve HTTP status code
         list($version, $statusCode, $msg) = \explode(' ', $http_response_header[0], 3);
 
-        return 200 === $statusCode;
+        return 200 === (int) $statusCode;
     }
 
     /**
