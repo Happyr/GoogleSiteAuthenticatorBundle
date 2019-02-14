@@ -27,12 +27,12 @@ class AccessToken
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 
     public function getToken(): string
     {
-        return $this->token;
+        return $this->token ?? '';
     }
 
     public function getExpires(): \DateTimeInterface
