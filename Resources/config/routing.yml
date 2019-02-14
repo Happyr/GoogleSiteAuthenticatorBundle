@@ -12,7 +12,7 @@ happyr.google_site_authenticator.revoke:
   defaults: { _controller: HappyrGoogleSiteAuthenticatorBundle:Admin:revoke}
 
 happyr.google_site_authenticator.remove:
-  path: '/authenticate-google/revoke/{name}'
+  path: '/authenticate-google/remove/{name}'
   defaults: { _controller: HappyrGoogleSiteAuthenticatorBundle:Admin:remove}
 
 happyr.google_site_authenticator.return_url:
