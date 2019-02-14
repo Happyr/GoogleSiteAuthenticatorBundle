@@ -77,7 +77,7 @@ class ClientProvider
     /**
      * Store the access token in the storage.
      */
-    public function setAccessToken(string $accessToken, string $tokenName = null)
+    public function setAccessToken(?string $accessToken, string $tokenName = null)
     {
         $name = $this->config->getKey($tokenName);
         $cacheKey = $this->creteCacheKey($name);
