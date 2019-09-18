@@ -63,7 +63,7 @@ class ClientProvider
 
         // Get the token string from access token
         $token = \json_decode($accessToken)->access_token;
-        $url = \sprintf('https://www.google.com/accounts/AuthSubTokenInfo?bearer_token=%s', $token);
+        $url = \sprintf('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s', $token);
         if (false === @\file_get_contents($url)) {
             return false;
         }
