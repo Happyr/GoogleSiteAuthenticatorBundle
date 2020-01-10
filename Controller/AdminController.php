@@ -25,7 +25,7 @@ class AdminController extends Controller
             $tokens[$tokenName] = $clientProvider->isTokenValid($tokenName);
         }
 
-        return $this->render('HappyrGoogleSiteAuthenticatorBundle:admin:index.html.twig', [
+        return $this->render('@HappyrGoogleSiteAuthenticator/admin/index.html.twig', [
             'tokens' => $tokens,
         ]);
     }
