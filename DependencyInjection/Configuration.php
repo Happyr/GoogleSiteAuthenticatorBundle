@@ -16,13 +16,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('happyr_google_site_authenticator');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->root('happyr_google_site_authenticator');
-        } else {
-            $root = $treeBuilder->getRootNode();
-        }
-
+        $root = $treeBuilder->getRootNode();
+        
         $root->children()
             ->scalarNode('cache_service')->cannotBeEmpty()->end()
             ->append($this->getTokenNode())
@@ -36,8 +31,8 @@ class Configuration implements ConfigurationInterface
      */
     private function getTokenNode()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('tokens');
+        $treeBuilder = new TreeBuilder('tokens');
+        $node = $treeBuilder->getRootNode();
         $node
             ->isRequired()
             ->requiresAtLeastOneElement()

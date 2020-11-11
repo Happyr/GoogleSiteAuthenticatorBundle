@@ -2,6 +2,8 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\DependencyInjection;
 
+use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
+use Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,11 +27,11 @@ class HappyrGoogleSiteAuthenticatorExtension extends Extension
         $loader->load('services.yml');
 
         // Configure the correct PSR-6 cache
-        $clientProvider = $container->getDefinition('happyr.google_site_authenticator.client_provider');
+        $clientProvider = $container->getDefinition(ClientProvider::class);
         $clientProvider->replaceArgument(1, new Reference($config['cache_service']));
 
         // Configure TokenConfig
-        $definition = $container->getDefinition('happyr.google_site_authenticator.token_config');
+        $definition = $container->getDefinition(TokenConfig::class);
         $definition->replaceArgument(0, $config['tokens']);
 
         // make sure we shortcut the service name

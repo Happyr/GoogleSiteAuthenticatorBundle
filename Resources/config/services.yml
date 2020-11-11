@@ -1,18 +1,22 @@
 parameters:
 
 services:
-  happyr.google_site_authenticator.token_config:
-    class: Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig
+  Happyr\GoogleSiteAuthenticatorBundle\Controller\AdminController:
+    tags: ['controller.service_arguments']
+    autowire: true
+    autoconfigure: true
+
+  happyr.google_site_authenticator.token_config: '@Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig'
+  Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig:
     arguments: [~]
 
-  happyr.google_site_authenticator.client_provider:
-    class: Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider
+  happyr.google_site_authenticator.client_provider: '@Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider'
+  Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider:
     arguments: [ '@happyr.google_site_authenticator.token_config', ~]
 
-  happyr.google.client_provider:
-    alias: happyr.google_site_authenticator.client_provider
+  happyr.google.client_provider: '@Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider'
 
   happyr.google_site_authenticator.client:
     class: Google_Client
-    factory: [ '@happyr.google_site_authenticator.client_provider', getClient]
+    factory: [ '@Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider', getClient]
     arguments: [~]

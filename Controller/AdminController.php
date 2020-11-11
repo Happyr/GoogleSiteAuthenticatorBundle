@@ -2,7 +2,10 @@
 
 namespace Happyr\GoogleSiteAuthenticatorBundle\Controller;
 
+use Happyr\GoogleSiteAuthenticatorBundle\Model\TokenConfig;
+use Happyr\GoogleSiteAuthenticatorBundle\Service\ClientProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,16 +16,30 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminController extends Controller
 {
     const SESSION_KEY = 'google_token_name';
-    
+
+    /**
+     * @var ClientProvider
+     */
+    private $clientProvider;
+
+    /**
+     * @var TokenConfig
+     */
+    private $tokenConfig;
+
+    public function __construct(ClientProvider $clientProvider, TokenConfig $tokenConfig)
+    {
+        $this->clientProvider = $clientProvider;
+        $this->tokenConfig = $tokenConfig;
+    }
+
     public function indexAction()
     {
-        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
-        $tokenConfig = $this->get('happyr.google_site_authenticator.token_config');
-        $tokenNames = $tokenConfig->getAllKeys();
+        $tokenNames = $this->tokenConfig->getAllKeys();
 
         $tokens = [];
         foreach ($tokenNames as $tokenName) {
-            $tokens[$tokenName] = $clientProvider->isTokenValid($tokenName);
+            $tokens[$tokenName] = $this->clientProvider->isTokenValid($tokenName);
         }
 
         return $this->render('@HappyrGoogleSiteAuthenticator/admin/index.html.twig', [
@@ -41,8 +58,7 @@ class AdminController extends Controller
     public function authenticateAction(Request $request, $name)
     {
         /* @var \Google_Client $client */
-        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
-        $client = $clientProvider->getClient($name);
+        $client = $this->clientProvider->getClient($name);
 
         // This will allow us to get refresh the token
         $client->setAccessType('offline');
@@ -64,11 +80,10 @@ class AdminController extends Controller
     public function revokeAction($name)
     {
         /* @var \Google_Client $client */
-        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
-        $client = $clientProvider->getClient($name);
+        $client = $this->clientProvider->getClient($name);
 
         $client->revokeToken();
-        $clientProvider->setAccessToken(null, $name);
+        $this->clientProvider->setAccessToken(null, $name);
 
         $this->get('session')->getFlashbag()->add('msg', 'Token was revoked.');
 
@@ -86,9 +101,7 @@ class AdminController extends Controller
     public function removeAction($name)
     {
         /* @var \Google_Client $client */
-        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
-        $clientProvider->setAccessToken(null, $name);
-
+        $this->clientProvider->setAccessToken(null, $name);
         $this->get('session')->getFlashbag()->add('msg', 'Token was removed.');
 
         return $this->redirect($this->generateUrl('happyr.google_site_authenticator.index'));
@@ -106,14 +119,13 @@ class AdminController extends Controller
         $name = $request->getSession()->get(self::SESSION_KEY, null);
 
         /* @var \Google_Client $client */
-        $clientProvider = $this->get('happyr.google_site_authenticator.client_provider');
-        $client = $clientProvider->getClient($name);
+        $client = $this->clientProvider->getClient($name);
 
         $flashBag = $this->get('session')->getFlashbag();
         if ($request->query->has('code')) {
             try {
                 $client->authenticate($request->query->get('code'));
-                $clientProvider->setAccessToken($client->getAccessToken(), $name);
+                $this->clientProvider->setAccessToken($client->getAccessToken(), $name);
 
                 $flashBag->add('msg', 'Successfully authenticated!');
             } catch (\Google_Auth_Exception $e) {
